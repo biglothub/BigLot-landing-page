@@ -17,6 +17,10 @@
             <div class="col">
                 <h4>Contact</h4>
                 <a href="https://lin.ee/6k6uh0E" target="_blank" rel="noopener noreferrer">Line Official</a>
+                <a href="https://t.me/biglot_community" target="_blank" rel="noopener noreferrer" class="telegram-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.667l-2.945-.916c-.64-.203-.658-.64.135-.954l11.57-4.461c.537-.194 1.006.131.964.885z"/></svg>
+                    Telegram Community
+                </a>
             </div>
         </div>
 
@@ -72,6 +76,17 @@
 
     .col a:hover {
         color: var(--primary);
+    }
+
+    .telegram-link {
+        display: flex !important;
+        align-items: center;
+        gap: 0.4rem;
+        color: #5bb5e5 !important;
+    }
+
+    .telegram-link:hover {
+        color: #7ecfff !important;
     }
 
     .risk-disclaimer {

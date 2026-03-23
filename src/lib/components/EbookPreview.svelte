@@ -99,30 +99,6 @@
                 </ul>
             </div>
         </div>
-
-        <div class="sample-gallery">
-            <p class="gallery-label">ตัวอย่างเนื้อหาจริงใน eBook</p>
-            <div class="gallery-row">
-                <div class="gallery-item glass">
-                    <img src="/images/preview-sessions.png"
-                         alt="เทียบเวลา Forex Sessions กับเวลาไทย"
-                         loading="lazy" />
-                    <p class="gallery-caption">เทียบเวลา Forex Sessions กับเวลาไทย</p>
-                </div>
-                <div class="gallery-item glass">
-                    <img src="/images/preview-supply-demand.webp"
-                         alt="Supply & Demand Zone"
-                         loading="lazy" />
-                    <p class="gallery-caption">Supply & Demand Zone Analysis</p>
-                </div>
-                <div class="gallery-item glass">
-                    <img src="/images/preview-currencies.jpg"
-                         alt="8 Major Currency Pairs"
-                         loading="lazy" />
-                    <p class="gallery-caption">8 Major Currency Pairs</p>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 
@@ -249,57 +225,6 @@
         color: var(--primary);
     }
 
-    /* Sample Gallery */
-    .sample-gallery {
-        margin-top: 3rem;
-        max-width: 900px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .gallery-label {
-        text-align: center;
-        font-size: 0.8rem;
-        font-weight: 600;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--text-muted);
-        margin-bottom: 1.25rem;
-    }
-
-    .gallery-row {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(200px, 1fr));
-        gap: 1rem;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .gallery-item {
-        border-radius: 16px;
-        overflow: hidden;
-        transition: transform 0.3s ease, border-color 0.3s ease;
-    }
-
-    .gallery-item:hover {
-        transform: translateY(-4px);
-        border-color: rgba(255, 215, 0, 0.25);
-    }
-
-    .gallery-item img {
-        width: 100%;
-        height: 160px;
-        object-fit: cover;
-        display: block;
-    }
-
-    .gallery-caption {
-        padding: 0.6rem 1rem;
-        font-size: 0.75rem;
-        color: var(--text-muted);
-        text-align: center;
-    }
-
     @media (min-width: 768px) {
         .preview-grid {
             grid-template-columns: repeat(2, 1fr);
@@ -310,9 +235,5 @@
             font-size: 3rem;
         }
 
-        .gallery-row {
-            grid-template-columns: repeat(3, 1fr);
-            overflow-x: unset;
-        }
     }
 </style>
