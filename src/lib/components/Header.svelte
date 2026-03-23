@@ -63,10 +63,16 @@
             <a href="#steps" onclick={closeMenu}>ขั้นตอน</a>
             <a href="#signup" onclick={closeMenu}>รับ eBook ฟรี</a>
         </div>
-        <a href="https://t.me/biglot_community" target="_blank" rel="noopener noreferrer" class="tg-btn" onclick={closeMenu}>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.667l-2.945-.916c-.64-.203-.658-.64.135-.954l11.57-4.461c.537-.194 1.006.131.964.885z"/></svg>
-            Telegram Community
-        </a>
+        <div class="social-btns">
+            <a href="https://lin.ee/6k6uh0E" target="_blank" rel="noopener noreferrer" class="line-btn" onclick={closeMenu}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm6.625 10.625c0 2.79-2.793 5.063-6.625 5.063-.353 0-.7-.025-1.04-.068l-2.26 1.607c-.107.076-.236.023-.236-.107v-1.88C6.275 14.07 5.375 12.46 5.375 10.625c0-2.79 2.793-5.063 6.625-5.063s6.625 2.273 6.625 5.063z"/></svg>
+                Line Official
+            </a>
+            <a href="https://t.me/biglot_community" target="_blank" rel="noopener noreferrer" class="tg-btn" onclick={closeMenu}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.667l-2.945-.916c-.64-.203-.658-.64.135-.954l11.57-4.461c.537-.194 1.006.131.964.885z"/></svg>
+                Telegram Community
+            </a>
+        </div>
     </nav>
 </div>
 
@@ -239,6 +245,32 @@
 
     .nav-links a:hover {
         color: var(--primary);
+    }
+
+    .social-btns {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .line-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 12px 28px;
+        border-radius: 99px;
+        background: rgba(6, 199, 85, 0.1);
+        border: 1px solid rgba(6, 199, 85, 0.3);
+        color: #06c755;
+        font-size: 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .line-btn:hover {
+        background: rgba(6, 199, 85, 0.2);
+        border-color: #06c755;
     }
 
     .tg-btn {

@@ -1,7 +1,13 @@
-import { Resend } from 'resend';
-import { RESEND_API_KEY, EBOOK_FREE_DOWNLOAD_URL, EBOOK_PREMIUM_DOWNLOAD_URL, ADMIN_EMAIL, DISCORD_INVITE_URL } from '$env/static/private';
+import nodemailer from 'nodemailer';
+import { GMAIL_USER, GMAIL_APP_PASSWORD, EBOOK_FREE_DOWNLOAD_URL, EBOOK_PREMIUM_DOWNLOAD_URL, ADMIN_EMAIL, DISCORD_INVITE_URL } from '$env/static/private';
 
-const resend = new Resend(RESEND_API_KEY);
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: GMAIL_USER,
+        pass: GMAIL_APP_PASSWORD,
+    },
+});
 
 function escapeHtml(str: string): string {
     return str
@@ -55,8 +61,8 @@ export async function sendEbookEmail(name: string, email: string, tier: 'free' |
                         </td></tr>
                     </table>` : '';
 
-    const { error } = await resend.emails.send({
-        from: 'BigLot <noreply@biglot.com>',
+    await transporter.sendMail({
+        from: `BigLot <${GMAIL_USER}>`,
         to: email,
         subject: `${ebookName} - พร้อมดาวน์โหลดแล้ว!`,
         html: `
@@ -107,10 +113,6 @@ export async function sendEbookEmail(name: string, email: string, tier: 'free' |
 </body>
 </html>`
     });
-
-    if (error) {
-        throw new Error(`Failed to send email: ${error.message}`);
-    }
 }
 
 export async function sendAdminNotification(
@@ -123,8 +125,8 @@ export async function sendAdminNotification(
     const adminEmail = ADMIN_EMAIL;
     if (!adminEmail) return;
 
-    const { error } = await resend.emails.send({
-        from: 'BigLot System <noreply@biglot.com>',
+    await transporter.sendMail({
+        from: `BigLot System <${GMAIL_USER}>`,
         to: adminEmail,
         subject: `[${tier.toUpperCase()} Request] ${escapeHtml(name)} - รอตรวจสอบ Slip (${tier === 'vip' ? '$500' : '$100'})`,
         html: `
@@ -177,8 +179,4 @@ export async function sendAdminNotification(
 </body>
 </html>`
     });
-
-    if (error) {
-        throw new Error(`Failed to send admin notification: ${error.message}`);
-    }
 }
