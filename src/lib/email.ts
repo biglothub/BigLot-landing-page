@@ -1,7 +1,46 @@
 import { Resend } from 'resend';
-import { RESEND_API_KEY, RESEND_FROM_EMAIL, EBOOK_FREE_DOWNLOAD_URL, EBOOK_PREMIUM_DOWNLOAD_URL, ADMIN_EMAIL, DISCORD_INVITE_URL } from '$env/static/private';
+import nodemailer from 'nodemailer';
+import {
+    EMAIL_PROVIDER,
+    RESEND_API_KEY,
+    RESEND_FROM_EMAIL,
+    GMAIL_USER,
+    GMAIL_APP_PASSWORD,
+    EBOOK_FREE_DOWNLOAD_URL,
+    EBOOK_PREMIUM_DOWNLOAD_URL,
+    ADMIN_EMAIL,
+    DISCORD_INVITE_URL
+} from '$env/static/private';
 
-const resend = new Resend(RESEND_API_KEY);
+// --- Providers ---
+
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : null;
+
+const gmailTransporter = (GMAIL_USER && GMAIL_APP_PASSWORD)
+    ? nodemailer.createTransport({
+        service: 'gmail',
+        auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD },
+    })
+    : null;
+
+async function sendEmail({ from, to, subject, html }: { from: string; to: string; subject: string; html: string }) {
+    if (EMAIL_PROVIDER === 'gmail') {
+        if (!gmailTransporter) throw new Error('Gmail is not configured. Set GMAIL_USER and GMAIL_APP_PASSWORD.');
+        await gmailTransporter.sendMail({ from, to, subject, html });
+    } else {
+        if (!resend) throw new Error('Resend is not configured. Set RESEND_API_KEY.');
+        await resend.emails.send({ from, to, subject, html });
+    }
+}
+
+function getFromEmail(label = 'BigLot'): string {
+    if (EMAIL_PROVIDER === 'gmail') {
+        return `${label} <${GMAIL_USER}>`;
+    }
+    return RESEND_FROM_EMAIL;
+}
+
+// --- Helpers ---
 
 function escapeHtml(str: string): string {
     return str
@@ -11,6 +50,8 @@ function escapeHtml(str: string): string {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#039;');
 }
+
+// --- Public API ---
 
 export async function sendEbookEmail(name: string, email: string, tier: 'free' | 'premium' | 'vip') {
     const freeUrl = EBOOK_FREE_DOWNLOAD_URL;
@@ -25,7 +66,6 @@ export async function sendEbookEmail(name: string, email: string, tier: 'free' |
 
     const downloadUrl = tier === 'free' ? freeUrl : premiumUrl;
 
-    // VIP: show both ebook download buttons
     const vipBothBooks = tier === 'vip' ? `
                     <table cellpadding="0" cellspacing="0" width="100%" style="margin-top:16px;">
                         <tr><td align="center">
@@ -35,12 +75,11 @@ export async function sendEbookEmail(name: string, email: string, tier: 'free' |
                         </td></tr>
                     </table>` : '';
 
-    // Discord section for VIP
     const discordSection = (tier === 'vip' && discordInvite) ? `
                     <table cellpadding="0" cellspacing="0" width="100%" style="margin-top:24px;">
                         <tr><td style="padding:20px; background:#1a1a1a; border-radius:12px; border:1px solid rgba(88,101,242,0.3);">
                             <p style="color:#7289da; font-size:14px; font-weight:700; margin:0 0 12px; text-align:center;">
-                                🎮 Discord VIP Membership
+                                Discord VIP Membership
                             </p>
                             <p style="color:rgba(255,255,255,0.6); font-size:14px; line-height:1.6; margin:0 0 16px; text-align:center;">
                                 กดปุ่มด้านล่างเพื่อเข้า Discord VIP
@@ -55,11 +94,7 @@ export async function sendEbookEmail(name: string, email: string, tier: 'free' |
                         </td></tr>
                     </table>` : '';
 
-    await resend.emails.send({
-        from: RESEND_FROM_EMAIL,
-        to: email,
-        subject: `${ebookName} - พร้อมดาวน์โหลดแล้ว!`,
-        html: `
+    const htmlContent = `
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
@@ -71,7 +106,7 @@ export async function sendEbookEmail(name: string, email: string, tier: 'free' |
                     <h1 style="color:#FFD700; font-size:28px; margin:0; font-weight:800;">BigLot</h1>
                 </td></tr>
                 <tr><td style="padding:20px 40px;">
-                    <h2 style="color:#ffffff; font-size:24px; margin:0 0 16px;">สวัสดีคุณ ${escapeHtml(name)}! 🎉</h2>
+                    <h2 style="color:#ffffff; font-size:24px; margin:0 0 16px;">สวัสดีคุณ ${escapeHtml(name)}!</h2>
                     <p style="color:rgba(255,255,255,0.7); font-size:16px; line-height:1.7; margin:0 0 8px;">
                         ${tier !== 'free'
                             ? 'ทีมงานได้ตรวจสอบ Slip ของคุณเรียบร้อยแล้ว!'
@@ -105,7 +140,13 @@ export async function sendEbookEmail(name: string, email: string, tier: 'free' |
         </td></tr>
     </table>
 </body>
-</html>`
+</html>`;
+
+    await sendEmail({
+        from: getFromEmail(),
+        to: email,
+        subject: `${ebookName} - พร้อมดาวน์โหลดแล้ว!`,
+        html: htmlContent,
     });
 }
 
@@ -119,11 +160,7 @@ export async function sendAdminNotification(
     const adminEmail = ADMIN_EMAIL;
     if (!adminEmail) return;
 
-    await resend.emails.send({
-        from: RESEND_FROM_EMAIL,
-        to: adminEmail,
-        subject: `[${tier.toUpperCase()} Request] ${escapeHtml(name)} - รอตรวจสอบ Slip (${tier === 'vip' ? '$500' : '$100'})`,
-        html: `
+    const htmlContent = `
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
@@ -132,7 +169,7 @@ export async function sendAdminNotification(
         <tr><td align="center">
             <table width="600" cellpadding="0" cellspacing="0" style="background-color:#0a0a0a; border:1px solid rgba(255,255,255,0.1); border-radius:16px; overflow:hidden;">
                 <tr><td style="padding:40px 40px 20px; text-align:center;">
-                    <h1 style="color:#FFD700; font-size:24px; margin:0;">${tier === 'vip' ? '👑 VIP Membership' : 'Premium eBook'} Request</h1>
+                    <h1 style="color:#FFD700; font-size:24px; margin:0;">${tier === 'vip' ? 'VIP Membership' : 'Premium eBook'} Request</h1>
                 </td></tr>
                 <tr><td style="padding:20px 40px;">
                     <table width="100%" cellpadding="8" style="font-size:14px;">
@@ -171,6 +208,12 @@ export async function sendAdminNotification(
         </td></tr>
     </table>
 </body>
-</html>`
+</html>`;
+
+    await sendEmail({
+        from: getFromEmail('BigLot System'),
+        to: adminEmail,
+        subject: `[${tier.toUpperCase()} Request] ${escapeHtml(name)} - รอตรวจสอบ Slip (${tier === 'vip' ? '$500' : '$100'})`,
+        html: htmlContent,
     });
 }
