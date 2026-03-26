@@ -1,12 +1,21 @@
 <script lang="ts">
     let adminKey = $state('');
     let isAuthed = $state(false);
+    let activeTab: 'ebook' | 'indicator' = $state('ebook');
+
+    // eBook leads
     let leads: any[] = $state([]);
     let loading = $state(false);
     let filter: 'pending' | 'approved' | 'all' = $state('pending');
     let actionLoading: string | null = $state(null);
     let message = $state('');
     let dbConnected = $state(true);
+
+    // Indicator leads
+    let indicatorLeads: any[] = $state([]);
+    let indicatorLoading = $state(false);
+    let indicatorFilter: 'pending' | 'granted' | 'all' = $state('pending');
+    let grantLoading: string | null = $state(null);
 
     async function login() {
         isAuthed = true;
@@ -36,6 +45,47 @@
             message = '';
         } finally {
             loading = false;
+        }
+    }
+
+    async function fetchIndicatorLeads() {
+        indicatorLoading = true;
+        message = '';
+        try {
+            const res = await fetch(`/api/admin/indicator-leads?filter=${indicatorFilter}&admin_key=${encodeURIComponent(adminKey)}`);
+            const data = await res.json();
+            if (!res.ok) {
+                message = data.error || 'Error fetching indicator leads';
+                return;
+            }
+            indicatorLeads = data.leads || [];
+        } catch {
+            message = 'ไม่สามารถเชื่อมต่อได้';
+        } finally {
+            indicatorLoading = false;
+        }
+    }
+
+    async function handleGrant(leadId: string) {
+        grantLoading = leadId;
+        message = '';
+        try {
+            const res = await fetch('/api/admin/indicator-grant', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ lead_id: leadId, admin_key: adminKey })
+            });
+            const data = await res.json();
+            if (!res.ok) {
+                message = data.error || 'Error';
+                return;
+            }
+            message = data.message;
+            await fetchIndicatorLeads();
+        } catch {
+            message = 'เกิดข้อผิดพลาด';
+        } finally {
+            grantLoading = null;
         }
     }
 
@@ -86,7 +136,8 @@
 
     $effect(() => {
         if (isAuthed) {
-            fetchLeads();
+            if (activeTab === 'ebook') fetchLeads();
+            else fetchIndicatorLeads();
         }
     });
 </script>
@@ -124,10 +175,22 @@
                 <h1>BigLot Admin</h1>
                 <div class="header-actions">
                     <span class="status-dot" class:online={dbConnected}></span>
-                    <button class="refresh-btn" onclick={fetchLeads} disabled={loading || !dbConnected}>
-                        {loading ? '⏳' : '🔄'} Refresh
+                    <button class="refresh-btn" onclick={() => activeTab === 'ebook' ? fetchLeads() : fetchIndicatorLeads()} disabled={loading || indicatorLoading || !dbConnected}>
+                        {loading || indicatorLoading ? '⏳' : '🔄'} Refresh
                     </button>
                 </div>
+            </div>
+
+            <!-- Tab switcher -->
+            <div class="tab-switcher">
+                <button class="tab-btn" class:active-tab={activeTab === 'ebook'}
+                    onclick={() => { activeTab = 'ebook'; fetchLeads(); }}>
+                    📚 eBook Leads
+                </button>
+                <button class="tab-btn" class:active-tab={activeTab === 'indicator'}
+                    onclick={() => { activeTab = 'indicator'; fetchIndicatorLeads(); }}>
+                    📊 Indicator Leads
+                </button>
             </div>
 
             {#if !dbConnected}
@@ -167,21 +230,22 @@
                     </div>
                 </div>
             {:else}
-            <div class="filters">
-                <button class="filter-btn" class:active={filter === 'pending'} onclick={() => { filter = 'pending'; }}>
-                    ⏳ รอ Approve
-                </button>
-                <button class="filter-btn" class:active={filter === 'approved'} onclick={() => { filter = 'approved'; }}>
-                    ✅ Approved
-                </button>
-                <button class="filter-btn" class:active={filter === 'all'} onclick={() => { filter = 'all'; }}>
-                    📋 ทั้งหมด
-                </button>
-            </div>
-
             {#if message}
                 <div class="toast">{message}</div>
             {/if}
+
+            {#if activeTab === 'ebook'}
+            <div class="filters">
+                <button class="filter-btn" class:active={filter === 'pending'} onclick={() => { filter = 'pending'; fetchLeads(); }}>
+                    ⏳ รอ Approve
+                </button>
+                <button class="filter-btn" class:active={filter === 'approved'} onclick={() => { filter = 'approved'; fetchLeads(); }}>
+                    ✅ Approved
+                </button>
+                <button class="filter-btn" class:active={filter === 'all'} onclick={() => { filter = 'all'; fetchLeads(); }}>
+                    📋 ทั้งหมด
+                </button>
+            </div>
 
             {#if loading}
                 <p class="loading-text">กำลังโหลด...</p>
@@ -243,6 +307,74 @@
                         </div>
                     {/each}
                 </div>
+            {/if}
+
+            {:else}
+            <!-- Indicator Leads Tab -->
+            <div class="filters">
+                <button class="filter-btn" class:active={indicatorFilter === 'pending'} onclick={() => { indicatorFilter = 'pending'; fetchIndicatorLeads(); }}>
+                    ⏳ รอ Grant
+                </button>
+                <button class="filter-btn" class:active={indicatorFilter === 'granted'} onclick={() => { indicatorFilter = 'granted'; fetchIndicatorLeads(); }}>
+                    ✅ Granted
+                </button>
+                <button class="filter-btn" class:active={indicatorFilter === 'all'} onclick={() => { indicatorFilter = 'all'; fetchIndicatorLeads(); }}>
+                    📋 ทั้งหมด
+                </button>
+            </div>
+
+            {#if indicatorLoading}
+                <p class="loading-text">กำลังโหลด...</p>
+            {:else if indicatorLeads.length === 0}
+                <div class="empty">
+                    <p>ไม่มีข้อมูล</p>
+                </div>
+            {:else}
+                <div class="leads-list">
+                    {#each indicatorLeads as lead (lead.id)}
+                        <div class="lead-card" class:approved={lead.access_granted}>
+                            <div class="lead-top">
+                                <span class="tier-badge" style="color:#60a5fa">📊 Indicator</span>
+                                <span class="time">{timeAgo(lead.created_at)}</span>
+                            </div>
+
+                            <div class="lead-info">
+                                <div class="info-row">
+                                    <span class="label">ชื่อ</span>
+                                    <span class="value">{lead.name}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">Email</span>
+                                    <span class="value">{lead.email}</span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="label">TV Username</span>
+                                    <span class="value highlight">{lead.tradingview_username}</span>
+                                </div>
+                            </div>
+
+                            <div class="lead-status">
+                                {#if lead.access_granted}
+                                    <span class="status approved-status">✅ Access Granted</span>
+                                    {#if lead.email_sent}
+                                        <span class="status sent-status">📧 Email ส่งแล้ว</span>
+                                    {/if}
+                                {:else}
+                                    <div class="actions">
+                                        <button
+                                            class="btn-approve"
+                                            onclick={() => handleGrant(lead.id)}
+                                            disabled={grantLoading === lead.id}
+                                        >
+                                            {grantLoading === lead.id ? '⏳' : '✅'} Mark as Granted
+                                        </button>
+                                    </div>
+                                {/if}
+                            </div>
+                        </div>
+                    {/each}
+                </div>
+            {/if}
             {/if}
             {/if}
         </div>
@@ -463,6 +595,37 @@
         color: #666;
         font-size: 0.8rem;
         line-height: 1.4;
+    }
+
+    /* Tab Switcher */
+    .tab-switcher {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #1a1a1a;
+    }
+
+    .tab-btn {
+        padding: 10px 20px;
+        background: #111;
+        border: 1px solid #222;
+        border-radius: 10px;
+        color: #666;
+        cursor: pointer;
+        font-size: 0.875rem;
+        transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+        border-color: #444;
+        color: #aaa;
+    }
+
+    .tab-btn.active-tab {
+        border-color: #FFD700;
+        color: #FFD700;
+        background: rgba(255, 215, 0, 0.05);
     }
 
     /* Filters */
