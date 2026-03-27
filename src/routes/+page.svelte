@@ -5,7 +5,6 @@
     import EbookPreview from '$lib/components/EbookPreview.svelte';
     import AboutCredibility from '$lib/components/AboutCredibility.svelte';
     import SocialProof from '$lib/components/SocialProof.svelte';
-    import IndicatorSection from '$lib/components/IndicatorSection.svelte';
     import Steps from '$lib/components/Steps.svelte';
     import ComparisonTable from '$lib/components/ComparisonTable.svelte';
     import EbookTiers from '$lib/components/EbookTiers.svelte';
@@ -37,7 +36,6 @@
 <EbookPreview />
 <AboutCredibility />
 <SocialProof />
-<IndicatorSection />
 <Steps />
 <ComparisonTable />
 <EbookTiers />
