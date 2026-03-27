@@ -1,35 +1,36 @@
 <script>
     import { reveal } from '$lib/actions/reveal';
+    import { _ } from 'svelte-i18n';
 </script>
 
 <section class="pain-points" use:reveal>
     <div class="container">
         <h2 class="section-title">
-            คุณเคยเจอปัญหาเหล่านี้ไหม?
+            {$_('painPoints.title')}
         </h2>
 
         <div class="pain-grid">
             <div class="pain-card glass">
                 <div class="pain-icon">&#10060;</div>
-                <h3>เทรดแล้วขาดทุนซ้ำๆ</h3>
-                <p>ไม่มีระบบ ไม่มี SL/TP เปิดออเดอร์ตามอารมณ์ แล้วก็ล้างพอร์ตเหมือนเดิม</p>
+                <h3>{$_('painPoints.card1_title')}</h3>
+                <p>{$_('painPoints.card1_desc')}</p>
             </div>
 
             <div class="pain-card glass">
                 <div class="pain-icon">&#10060;</div>
-                <h3>ไม่รู้จะเริ่มจากตรงไหน</h3>
-                <p>ข้อมูลเยอะเกินไป ดู YouTube สอนคนละแบบ ยิ่งเรียนยิ่งสับสน</p>
+                <h3>{$_('painPoints.card2_title')}</h3>
+                <p>{$_('painPoints.card2_desc')}</p>
             </div>
 
             <div class="pain-card glass">
                 <div class="pain-icon">&#10060;</div>
-                <h3>ไม่มีแผนการเทรดที่ชัดเจน</h3>
-                <p>เทรดวันต่อวันไม่มี plan ไม่รู้ว่าเดือนนี้ควรทำกำไรเท่าไหร่ ความเสี่ยงเท่าไหร่</p>
+                <h3>{$_('painPoints.card3_title')}</h3>
+                <p>{$_('painPoints.card3_desc')}</p>
             </div>
         </div>
 
         <p class="pain-solution">
-            eBook ของเราออกแบบมาเพื่อ <span class="text-gold">แก้ปัญหาทั้งหมดนี้</span> ตั้งแต่พื้นฐานจนถึงแผนเทรดจริง
+            {$_('painPoints.solution')} <span class="text-gold">{$_('painPoints.solution_highlight')}</span> {$_('painPoints.solution_suffix')}
         </p>
     </div>
 </section>

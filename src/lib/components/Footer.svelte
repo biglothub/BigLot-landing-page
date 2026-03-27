@@ -1,38 +1,45 @@
+<script>
+    import { page } from '$app/stores';
+    import { _ } from 'svelte-i18n';
+
+    const lang = $derived($page.params.lang || 'th');
+</script>
+
 <footer class="glass">
     <div class="container">
         <div class="footer-top">
             <div class="col brand">
-                <a href="/" class="logo">BigLot</a>
-                <p>เครื่องมือเทรดระดับมืออาชีพ สำหรับทุกคน</p>
+                <a href="/{lang}" class="logo">BigLot</a>
+                <p>{$_('footer.brand_tagline')}</p>
             </div>
 
             <div class="col">
-                <h4>Links</h4>
-                <a href="#benefits">ประโยชน์</a>
-                <a href="#ebooks">แพ็กเกจ</a>
-                <a href="#steps">ขั้นตอน</a>
-                <a href="#signup">รับ eBook</a>
+                <h4>{$_('footer.links_heading')}</h4>
+                <a href="#benefits">{$_('footer.link_benefits')}</a>
+                <a href="#ebooks">{$_('footer.link_packages')}</a>
+                <a href="#steps">{$_('footer.link_steps')}</a>
+                <a href="#signup">{$_('footer.link_get_ebook')}</a>
             </div>
 
             <div class="col">
-                <h4>Contact</h4>
+                <h4>{$_('footer.contact_heading')}</h4>
                 <a href="https://lin.ee/6k6uh0E" target="_blank" rel="noopener noreferrer" class="line-link">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm6.625 10.625c0 2.79-2.793 5.063-6.625 5.063-.353 0-.7-.025-1.04-.068l-2.26 1.607c-.107.076-.236.023-.236-.107v-1.88C6.275 14.07 5.375 12.46 5.375 10.625c0-2.79 2.793-5.063 6.625-5.063s6.625 2.273 6.625 5.063z"/></svg>
-                    Line Official
+                    {$_('footer.contact_line')}
                 </a>
                 <a href="https://t.me/biglot_community" target="_blank" rel="noopener noreferrer" class="telegram-link">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L7.17 13.667l-2.945-.916c-.64-.203-.658-.64.135-.954l11.57-4.461c.537-.194 1.006.131.964.885z"/></svg>
-                    Telegram Community
+                    {$_('footer.contact_telegram')}
                 </a>
             </div>
         </div>
 
         <div class="risk-disclaimer">
-            <p><strong>คำเตือนความเสี่ยง:</strong> การเทรด Forex และ CFDs มีความเสี่ยงสูง คุณอาจสูญเสียเงินลงทุนทั้งหมด กรุณาศึกษาข้อมูลให้ครบถ้วนก่อนตัดสินใจลงทุน เนื้อหาใน eBook นี้เป็นเพียงความรู้เพื่อการศึกษาเท่านั้น ไม่ใช่คำแนะนำในการลงทุน ผลการเทรดในอดีตไม่ได้เป็นเครื่องรับประกันผลในอนาคต</p>
+            <p><strong>{$_('footer.risk_label')}</strong> {$_('footer.risk_text')}</p>
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; {new Date().getFullYear()} BigLot. All rights reserved.</p>
+            <p>&copy; {new Date().getFullYear()} {$_('footer.copyright')}</p>
         </div>
     </div>
 </footer>

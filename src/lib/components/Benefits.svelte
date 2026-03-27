@@ -1,14 +1,15 @@
 <script>
     import { reveal } from '$lib/actions/reveal';
+    import { _ } from 'svelte-i18n';
 </script>
 
 <section id="benefits" class="benefits" use:reveal>
     <div class="container">
         <h2 class="section-title">
-            ทำไมต้อง <span class="text-gold">eBook เล่มนี้?</span>
+            {$_('benefits.title')} <span class="text-gold">{$_('benefits.title_highlight')}</span>
         </h2>
         <p class="section-subtitle">
-            เนื้อหาที่คัดสรรมาเพื่อช่วยให้คุณเทรดได้อย่างมั่นใจ
+            {$_('benefits.subtitle')}
         </p>
 
         <div class="cards-grid">
@@ -16,8 +17,8 @@
                 <div class="card-glow"></div>
                 <div class="card-content">
                     <div class="icon">&#128218;</div>
-                    <h3>พื้นฐานที่แน่น</h3>
-                    <p>เรียนรู้หลักการเทรดตั้งแต่เริ่มต้น อธิบายง่าย เข้าใจได้ทันที แม้ไม่มีประสบการณ์</p>
+                    <h3>{$_('benefits.card1_title')}</h3>
+                    <p>{$_('benefits.card1_desc')}</p>
                 </div>
             </div>
 
@@ -25,8 +26,8 @@
                 <div class="card-glow"></div>
                 <div class="card-content">
                     <div class="icon">&#128200;</div>
-                    <h3>กลยุทธ์ที่ใช้ได้จริง</h3>
-                    <p>รวมเทคนิคและกลยุทธ์ที่ผ่านการทดสอบแล้ว พร้อม case study จริง</p>
+                    <h3>{$_('benefits.card2_title')}</h3>
+                    <p>{$_('benefits.card2_desc')}</p>
                 </div>
             </div>
 
@@ -34,8 +35,8 @@
                 <div class="card-glow"></div>
                 <div class="card-content">
                     <div class="icon">&#128737;</div>
-                    <h3>บริหารความเสี่ยง</h3>
-                    <p>เรียนรู้วิธีจัดการ Risk Management อย่างเป็นระบบ ปกป้องพอร์ตของคุณ</p>
+                    <h3>{$_('benefits.card3_title')}</h3>
+                    <p>{$_('benefits.card3_desc')}</p>
                 </div>
             </div>
         </div>

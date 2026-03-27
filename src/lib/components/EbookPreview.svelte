@@ -1,101 +1,46 @@
 <script>
     import { reveal } from '$lib/actions/reveal';
+    import { _ } from 'svelte-i18n';
 </script>
 
 <section id="ebook-preview" class="ebook-preview" use:reveal>
     <div class="container">
         <h2 class="section-title">
-            เนื้อหาภายใน <span class="text-gold">eBook</span>
+            {$_('ebookPreview.title')}
         </h2>
         <p class="section-subtitle">
-            เรียนรู้ตั้งแต่พื้นฐานจนถึงแผนเทรดจริง ครบจบในเล่มเดียว
+            {$_('ebookPreview.subtitle')}
         </p>
 
         <div class="preview-grid">
             <!-- Free eBook TOC -->
             <div class="toc-card glass">
-                <div class="toc-badge free">FREE</div>
-                <h3>7 วัน จาก 0 ถึงเทรดจริง</h3>
-                <p class="toc-desc">สำหรับมือใหม่ที่ยังไม่เคยเทรด</p>
+                <div class="toc-badge free">{$_('ebookPreview.free_badge')}</div>
+                <h3>{$_('ebookPreview.free_title')}</h3>
+                <p class="toc-desc">{$_('ebookPreview.free_desc')}</p>
                 <ul class="toc-list">
+                    {#each [1,2,3,4,5,6,7] as i}
                     <li>
-                        <span class="chapter-num">01</span>
-                        <span>ทำความรู้จัก XAUUSD & ตลาด Forex</span>
+                        <span class="chapter-num">{String(i).padStart(2, '0')}</span>
+                        <span>{$_(`ebookPreview.free_ch_${i}`)}</span>
                     </li>
-                    <li>
-                        <span class="chapter-num">02</span>
-                        <span>เปิดบัญชี Connext & ติดตั้ง MT5</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num">03</span>
-                        <span>อ่านกราฟเบื้องต้น & Candlestick</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num">04</span>
-                        <span>Lot Size คืออะไร? คำนวณยังไง?</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num">05</span>
-                        <span>ตั้ง SL/TP & กฎ 2% ป้องกันล้างพอร์ต</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num">06</span>
-                        <span>เปิดออเดอร์แรกของคุณ (Demo)</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num">07</span>
-                        <span>Checklist ก่อนเทรดจริงทุกวัน</span>
-                    </li>
+                    {/each}
                 </ul>
             </div>
 
             <!-- Premium eBook TOC -->
             <div class="toc-card glass premium-card">
                 <div class="toc-glow"></div>
-                <div class="toc-badge premium">PREMIUM</div>
-                <h3>TRADE DECODER</h3>
-                <p class="toc-desc">สำหรับคนที่พร้อมเทรดจริงจัง</p>
+                <div class="toc-badge premium">{$_('ebookPreview.premium_badge')}</div>
+                <h3>{$_('ebookPreview.premium_title')}</h3>
+                <p class="toc-desc">{$_('ebookPreview.premium_desc')}</p>
                 <ul class="toc-list">
+                    {#each [1,2,3,4,5,6,7,8,9,10] as i}
                     <li>
-                        <span class="chapter-num gold">01</span>
-                        <span>เข้าใจโครงสร้างตลาด Forex ระดับลึก</span>
+                        <span class="chapter-num gold">{String(i).padStart(2, '0')}</span>
+                        <span>{$_(`ebookPreview.premium_ch_${i}`)}</span>
                     </li>
-                    <li>
-                        <span class="chapter-num gold">02</span>
-                        <span>Technical Analysis: Support, Resistance & Trendlines</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num gold">03</span>
-                        <span>Indicator ที่ Pro ใช้จริง (RSI, MACD, EMA)</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num gold">04</span>
-                        <span>Fundamental Analysis & ข่าวที่กระทบราคา</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num gold">05</span>
-                        <span>Money Management แบบมืออาชีพ</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num gold">06</span>
-                        <span>สร้างระบบเทรดของคุณเอง</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num gold">07</span>
-                        <span>Case Study: การเทรดจริง 5 สถานการณ์</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num gold">08</span>
-                        <span>Trading Psychology & วิธีควบคุมอารมณ์</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num gold">09</span>
-                        <span>Trading Journal: บันทึกเพื่อพัฒนา</span>
-                    </li>
-                    <li>
-                        <span class="chapter-num gold">10</span>
-                        <span>แผน 90 วัน: จาก Demo สู่ Real Account</span>
-                    </li>
+                    {/each}
                 </ul>
             </div>
         </div>

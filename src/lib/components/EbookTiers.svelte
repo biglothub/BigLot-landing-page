@@ -1,6 +1,7 @@
 <script lang="ts">
     import { env } from '$env/dynamic/public';
     import { reveal } from '$lib/actions/reveal';
+    import { _ } from 'svelte-i18n';
 
     const brokerLink = env.PUBLIC_BROKER_AFFILIATE_LINK || '#signup';
 </script>
@@ -8,10 +9,10 @@
 <section id="ebooks" class="ebooks" use:reveal>
     <div class="container">
         <h2 class="section-title">
-            เลือก <span class="text-gold">แพ็กเกจ</span> ของคุณ
+            {$_('ebookTiers.title')}
         </h2>
         <p class="section-subtitle">
-            สมัคร Broker ผ่านเรา แล้วเลือกรับสิทธิ์ตามเงื่อนไข
+            {$_('ebookTiers.subtitle')}
         </p>
 
         <div class="tiers-grid">
@@ -20,25 +21,25 @@
                 <div class="tier-badge free-badge">FREE</div>
                 <div class="ebook-preview">
                     <div class="ebook-mini">
-                        <p class="ebook-label">eBOOK</p>
-                        <h4>7 วัน<br/><small>จาก 0 ถึงเทรดจริง</small></h4>
+                        <p class="ebook-label">{$_('ebookTiers.free_ebook_label')}</p>
+                        <h4>{$_('ebookTiers.free_ebook_mini_title')}<br/><small>{$_('ebookTiers.free_ebook_mini_subtitle')}</small></h4>
                     </div>
                 </div>
-                <h3>eBook เล่มที่ 1</h3>
-                <p class="tier-title text-gold">7 วัน จาก 0 ถึงเทรดจริง</p>
-                <p class="tier-price">ฟรี</p>
+                <h3>{$_('ebookTiers.free_card_title')}</h3>
+                <p class="tier-title text-gold">{$_('ebookTiers.free_tier_title')}</p>
+                <p class="tier-price">{$_('ebookTiers.free_price')}</p>
                 <ul class="tier-features">
-                    <li>พื้นฐานการเทรดทอง XAUUSD</li>
-                    <li>เปิดบัญชี Connext + ใช้ MT5</li>
-                    <li>Lot Size, SL/TP + กฎ 2%</li>
-                    <li>รับทันทีทาง Email</li>
+                    <li>{$_('ebookTiers.free_feature_1')}</li>
+                    <li>{$_('ebookTiers.free_feature_2')}</li>
+                    <li>{$_('ebookTiers.free_feature_3')}</li>
+                    <li>{$_('ebookTiers.free_feature_4')}</li>
                 </ul>
                 <div class="tier-condition">
-                    <span class="condition-label">เงื่อนไข</span>
-                    <p>สมัครบัญชี Broker ผ่าน link ของเรา</p>
+                    <span class="condition-label">{$_('ebookTiers.free_condition_label')}</span>
+                    <p>{$_('ebookTiers.free_condition_text')}</p>
                 </div>
                 <a href="#signup" class="tier-btn free-btn">
-                    <span>รับ eBook ฟรี</span>
+                    <span>{$_('ebookTiers.free_cta')}</span>
                 </a>
             </div>
 
@@ -48,26 +49,26 @@
                 <div class="tier-badge premium-badge">PREMIUM</div>
                 <div class="ebook-preview">
                     <div class="ebook-mini premium-ebook">
-                        <p class="ebook-label">eBOOK</p>
+                        <p class="ebook-label">{$_('ebookTiers.premium_ebook_label')}</p>
                         <h4>TRADE<br/><small>DECODER</small></h4>
                     </div>
                 </div>
-                <h3>eBook เล่มที่ 2</h3>
-                <p class="tier-title text-gold">TRADE DECODER</p>
-                <p class="tier-price">Deposit <span class="text-gold">$100</span></p>
+                <h3>{$_('ebookTiers.premium_card_title')}</h3>
+                <p class="tier-title text-gold">{$_('ebookTiers.premium_tier_title')}</p>
+                <p class="tier-price">{$_('ebookTiers.premium_price')}</p>
                 <ul class="tier-features">
-                    <li>คู่มือ Forex ครบ 10 บท + แผน 90 วัน</li>
-                    <li>Technical + Fundamental Analysis</li>
-                    <li>Money Management แบบมืออาชีพ</li>
-                    <li>Case Study การเทรดจริง</li>
-                    <li>Trading Psychology + Journal</li>
+                    <li>{$_('ebookTiers.premium_feature_1')}</li>
+                    <li>{$_('ebookTiers.premium_feature_2')}</li>
+                    <li>{$_('ebookTiers.premium_feature_3')}</li>
+                    <li>{$_('ebookTiers.premium_feature_4')}</li>
+                    <li>{$_('ebookTiers.premium_feature_5')}</li>
                 </ul>
                 <div class="tier-condition">
-                    <span class="condition-label">เงื่อนไข</span>
-                    <p>สมัครบัญชี + Deposit ขั้นต่ำ $100 + ส่ง Slip ผ่าน Line</p>
+                    <span class="condition-label">{$_('ebookTiers.premium_condition_label')}</span>
+                    <p>{$_('ebookTiers.premium_condition_text')}</p>
                 </div>
                 <a href="#signup" class="tier-btn premium-btn">
-                    <span>รับ eBook Premium</span>
+                    <span>{$_('ebookTiers.premium_cta')}</span>
                 </a>
             </div>
 
@@ -78,28 +79,28 @@
                 <div class="tier-badge vip-badge">VIP</div>
                 <div class="ebook-preview">
                     <div class="ebook-mini vip-ebook">
-                        <p class="ebook-label">VIP ACCESS</p>
+                        <p class="ebook-label">{$_('ebookTiers.vip_ebook_label')}</p>
                         <svg class="discord-logo" width="40" height="30" viewBox="0 0 24 24" fill="#5865F2" xmlns="http://www.w3.org/2000/svg" aria-label="Discord">
                             <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
                         </svg>
                         <h4>Discord<br/><small>Membership</small></h4>
                     </div>
                 </div>
-                <h3>VIP Membership</h3>
-                <p class="tier-title text-gold">eBook ทั้ง 2 เล่ม + Discord VIP</p>
-                <p class="tier-price">Deposit <span class="text-gold">$500</span></p>
+                <h3>{$_('ebookTiers.vip_card_title')}</h3>
+                <p class="tier-title text-gold">{$_('ebookTiers.vip_tier_title')}</p>
+                <p class="tier-price">{$_('ebookTiers.vip_price')}</p>
                 <ul class="tier-features">
-                    <li>eBook ทั้ง 2 เล่ม (Free + Premium)</li>
-                    <li>เข้า Discord VIP ตลอดชีพ</li>
-                    <li>Gold Signal & XAUUSD Zone</li>
-                    <li>Currency Plans & Algo Prime</li>
-                    <li>Live Trade & Zoom Live Trade</li>
-                    <li>Special Class & News Update</li>
-                    <li>Realtime Live Trade</li>
+                    <li>{$_('ebookTiers.vip_feature_1')}</li>
+                    <li>{$_('ebookTiers.vip_feature_2')}</li>
+                    <li>{$_('ebookTiers.vip_feature_3')}</li>
+                    <li>{$_('ebookTiers.vip_feature_4')}</li>
+                    <li>{$_('ebookTiers.vip_feature_5')}</li>
+                    <li>{$_('ebookTiers.vip_feature_6')}</li>
+                    <li>{$_('ebookTiers.vip_feature_7')}</li>
                 </ul>
                 <div class="tier-condition">
-                    <span class="condition-label">เงื่อนไข</span>
-                    <p>สมัครบัญชี + Deposit ขั้นต่ำ $500 + ส่ง Slip ผ่าน Line</p>
+                    <span class="condition-label">{$_('ebookTiers.vip_condition_label')}</span>
+                    <p>{$_('ebookTiers.vip_condition_text')}</p>
                 </div>
 
                 <div class="discord-preview">
@@ -107,11 +108,11 @@
                         <svg width="18" height="14" viewBox="0 0 24 24" fill="#5865F2" aria-hidden="true">
                             <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
                         </svg>
-                        <span>Discord Channels ที่จะได้รับ</span>
+                        <span>{$_('ebookTiers.discord_channels_header')}</span>
                     </div>
                     <div class="discord-channels">
-                        <span class="channel">&#128200; เตรียมตัวก่อนเทรด</span>
-                        <span class="channel">&#128172; gold-talk-พูดคุย</span>
+                        <span class="channel">&#128200; {$_('ebookTiers.discord_ch_1')}</span>
+                        <span class="channel">&#128172; {$_('ebookTiers.discord_ch_2')}</span>
                         <span class="channel">&#129689; xauusd-zone</span>
                         <span class="channel">&#128994; gold-signal</span>
                         <span class="channel">&#127760; currency-plans</span>
@@ -124,15 +125,15 @@
                 </div>
 
                 <a href="#signup" class="tier-btn vip-btn">
-                    <span>สมัคร VIP</span>
+                    <span>{$_('ebookTiers.vip_cta')}</span>
                 </a>
             </div>
         </div>
 
         <div class="broker-cta">
-            <p>ยังไม่มีบัญชี Broker?</p>
+            <p>{$_('ebookTiers.broker_cta_text')}</p>
             <a href={brokerLink} target="_blank" rel="noopener noreferrer" class="broker-btn">
-                สมัคร Broker เลย &rarr;
+                {$_('ebookTiers.broker_cta_button')}
             </a>
         </div>
     </div>

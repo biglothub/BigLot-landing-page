@@ -1,5 +1,10 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { page } from '$app/stores';
+    import { _ } from 'svelte-i18n';
+    import LanguageToggle from './LanguageToggle.svelte';
+
+    const lang = $derived($page.params.lang || 'th');
 
     let scrolled = $state(false);
     let isMenuOpen = $state(false);
@@ -29,18 +34,19 @@
 
 <header class:scrolled class:menu-active={isMenuOpen}>
     <div class="container header-inner">
-        <a href="/" class="logo">BigLot</a>
+        <a href="/{lang}" class="logo">BigLot</a>
 
         <nav class="desktop-nav">
-            <a href="#benefits">ประโยชน์</a>
-            <a href="#ebooks">แพ็กเกจ</a>
-            <a href="#steps">ขั้นตอน</a>
-            <a href="#signup">รับ eBook</a>
+            <a href="#benefits">{$_('header.nav_benefits')}</a>
+            <a href="#ebooks">{$_('header.nav_packages')}</a>
+            <a href="#steps">{$_('header.nav_steps')}</a>
+            <a href="#signup">{$_('header.nav_get_ebook')}</a>
         </nav>
 
         <div class="actions">
+            <LanguageToggle />
             <a href="#signup" class="cta-btn">
-                <span>รับ eBook ฟรี</span>
+                <span>{$_('header.cta_button')}</span>
             </a>
             <button
                 class="menu-btn"
@@ -58,10 +64,10 @@
 <div class="mobile-nav-overlay" class:active={isMenuOpen}>
     <nav class="mobile-nav">
         <div class="nav-links">
-            <a href="#benefits" onclick={closeMenu}>ประโยชน์</a>
-            <a href="#ebooks" onclick={closeMenu}>แพ็กเกจ</a>
-            <a href="#steps" onclick={closeMenu}>ขั้นตอน</a>
-            <a href="#signup" onclick={closeMenu}>รับ eBook ฟรี</a>
+            <a href="#benefits" onclick={closeMenu}>{$_('header.nav_benefits')}</a>
+            <a href="#ebooks" onclick={closeMenu}>{$_('header.nav_packages')}</a>
+            <a href="#steps" onclick={closeMenu}>{$_('header.nav_steps')}</a>
+            <a href="#signup" onclick={closeMenu}>{$_('header.mobile_nav_get_ebook')}</a>
         </div>
         <div class="social-btns">
             <a href="https://lin.ee/6k6uh0E" target="_blank" rel="noopener noreferrer" class="line-btn" onclick={closeMenu}>

@@ -1,32 +1,8 @@
 <script lang="ts">
     import { reveal } from '$lib/actions/reveal';
+    import { _ } from 'svelte-i18n';
 
-    const faqs = [
-        {
-            question: 'Broker Connext ปลอดภัยไหม?',
-            answer: 'Connext เป็น Broker ที่จดทะเบียนถูกต้อง มีระบบรักษาความปลอดภัยมาตรฐานสากล รองรับ MT5 และมีทีมซัพพอร์ตภาษาไทย'
-        },
-        {
-            question: 'ได้ eBook ภายในกี่นาที?',
-            answer: 'eBook ฟรี (เล่ม 1) ส่งทันทีผ่าน Email หลังกรอกฟอร์ม สำหรับ Premium และ VIP จะส่งภายใน 24 ชั่วโมงหลังทีมงานตรวจสอบ Slip เสร็จ'
-        },
-        {
-            question: 'ต้องมีประสบการณ์เทรดก่อนไหม?',
-            answer: 'ไม่จำเป็น eBook เล่ม 1 ออกแบบมาสำหรับมือใหม่ที่ไม่เคยเทรดเลย อธิบายตั้งแต่พื้นฐานจนเปิดออเดอร์แรกได้'
-        },
-        {
-            question: 'Deposit แล้วถอนเงินได้ไหม?',
-            answer: 'ได้ เงิน Deposit เป็นเงินในบัญชีเทรดของคุณ สามารถเทรดหรือถอนออกได้ตามปกติ ไม่ใช่ค่าธรรมเนียม'
-        },
-        {
-            question: 'Discord VIP ต้องจ่ายรายเดือนไหม?',
-            answer: 'ไม่ต้อง Deposit $500 ครั้งเดียวก็ได้เป็นสมาชิก Discord VIP ตลอดชีพ ไม่มีค่าใช้จ่ายเพิ่มเติม'
-        },
-        {
-            question: 'ถ้ามีปัญหาติดต่อได้ที่ไหน?',
-            answer: 'แอดไลน์ @BigLot ได้เลย ทีมงานพร้อมตอบทุกคำถาม หรือแชทในห้อง Discord สำหรับสมาชิก VIP'
-        }
-    ];
+    const faqKeys = [1, 2, 3, 4, 5, 6];
 
     let openIndex = $state(-1);
 
@@ -38,19 +14,19 @@
 <section id="faq" class="faq" use:reveal>
     <div class="container">
         <h2 class="section-title">
-            คำถาม <span class="text-gold">ที่พบบ่อย</span>
+            {$_('faq.title')}
         </h2>
 
         <div class="faq-list">
-            {#each faqs as faq, i}
+            {#each faqKeys as key, i}
                 <div class="faq-item glass" class:open={openIndex === i}>
                     <button class="faq-question" onclick={() => toggle(i)}>
-                        <span>{faq.question}</span>
+                        <span>{$_(`faq.q_${key}`)}</span>
                         <span class="faq-icon">{openIndex === i ? '−' : '+'}</span>
                     </button>
                     {#if openIndex === i}
                         <div class="faq-answer">
-                            <p>{faq.answer}</p>
+                            <p>{$_(`faq.a_${key}`)}</p>
                         </div>
                     {/if}
                 </div>

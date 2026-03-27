@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { _ } from 'svelte-i18n';
 
     let visible = $state(false);
 
@@ -15,7 +16,7 @@
 {#if visible}
     <div class="sticky-cta">
         <a href="#signup" class="sticky-btn">
-            <span>รับ eBook ฟรี</span>
+            <span>{$_('stickyMobileCta.button')}</span>
         </a>
     </div>
 {/if}

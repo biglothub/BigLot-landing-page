@@ -1,6 +1,8 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
+    import { page } from '$app/stores';
     import { reveal } from '$lib/actions/reveal';
+    import { _ } from 'svelte-i18n';
 
     let name = $state('');
     let email = $state('');
@@ -15,19 +17,19 @@
         errorMessage = '';
 
         if (!name.trim() || !email.trim() || !tvUsername.trim()) {
-            errorMessage = 'กรุณากรอกข้อมูลให้ครบทุกช่อง';
+            errorMessage = $_('indicatorSection.error_required');
             return;
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email.trim())) {
-            errorMessage = 'รูปแบบ Email ไม่ถูกต้อง';
+            errorMessage = $_('indicatorSection.error_email');
             return;
         }
 
         const tvRegex = /^[a-zA-Z0-9_]{3,25}$/;
         if (!tvRegex.test(tvUsername.trim())) {
-            errorMessage = 'TradingView Username ไม่ถูกต้อง (ตัวอักษร ตัวเลข หรือ _ เท่านั้น)';
+            errorMessage = $_('indicatorSection.error_tv_username');
             return;
         }
 
@@ -47,15 +49,16 @@
             const data = await res.json();
 
             if (!res.ok) {
-                errorMessage = data.error || 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+                errorMessage = data.error || $_('indicatorSection.error_generic');
                 return;
             }
 
             submittedEmail = email.trim();
             submitted = true;
-            setTimeout(() => goto('/thank-you?type=indicator'), 2500);
+            const lang = $page.params.lang || 'th';
+            setTimeout(() => goto(`/${lang}/thank-you?type=indicator`), 2500);
         } catch {
-            errorMessage = 'ไม่สามารถเชื่อมต่อได้ กรุณาลองใหม่';
+            errorMessage = $_('indicatorSection.error_connection');
         } finally {
             isSubmitting = false;
         }
@@ -65,9 +68,9 @@
 <section id="indicator" class="indicator-section" use:reveal>
     <div class="container">
         <div class="section-header" use:reveal>
-            <div class="badge">FREE TOOL</div>
-            <h2>รับ <span class="text-gold">Indicator ฟรี</span> บน TradingView</h2>
-            <p class="section-subtitle">ก่อนสมัคร Broker — ลองใช้ Indicator ที่ทีมงานใช้เทรดจริง</p>
+            <div class="badge">{$_('indicatorSection.badge')}</div>
+            <h2>{$_('indicatorSection.heading')}</h2>
+            <p class="section-subtitle">{$_('indicatorSection.subtitle')}</p>
         </div>
 
         <div class="indicator-layout">
@@ -115,22 +118,12 @@
                 </div>
 
                 <ul class="benefits-list">
+                    {#each [1,2,3,4] as i}
                     <li>
                         <span class="check">&#10003;</span>
-                        <span>สัญญาณ Buy แม่นยำ บน XAUUSD & Forex</span>
+                        <span>{$_(`indicatorSection.benefit_${i}`)}</span>
                     </li>
-                    <li>
-                        <span class="check">&#10003;</span>
-                        <span>Zone Support & Resistance อัตโนมัติ</span>
-                    </li>
-                    <li>
-                        <span class="check">&#10003;</span>
-                        <span>ใช้ได้ฟรี บน TradingView (Invite-only)</span>
-                    </li>
-                    <li>
-                        <span class="check">&#10003;</span>
-                        <span>ทีมงานเพิ่ม Access ให้ภายใน 24 ชั่วโมง</span>
-                    </li>
+                    {/each}
                 </ul>
             </div>
 
@@ -139,49 +132,49 @@
                 {#if submitted}
                     <div class="success-card glass-card">
                         <div class="success-icon">&#10003;</div>
-                        <h3>ลงทะเบียนสำเร็จ!</h3>
-                        <p>เราส่งอีเมลยืนยันไปที่<br/><span class="text-gold">{submittedEmail}</span></p>
-                        <p class="success-sub">ทีมงานจะเพิ่ม Access ให้ภายใน 24 ชั่วโมง</p>
+                        <h3>{$_('indicatorSection.success_title')}</h3>
+                        <p>{$_('indicatorSection.success_message', { values: { submittedEmail } })}</p>
+                        <p class="success-sub">{$_('indicatorSection.success_sub')}</p>
                     </div>
                 {:else}
                     <div class="form-card glass-card">
-                        <h3>รับ Indicator <span class="text-gold">ฟรี</span></h3>
-                        <p class="form-desc">ไม่ต้องสมัคร Broker — กรอกข้อมูลด้านล่างได้เลย</p>
+                        <h3>{$_('indicatorSection.form_title')}</h3>
+                        <p class="form-desc">{$_('indicatorSection.form_desc')}</p>
 
                         <form onsubmit={handleSubmit}>
                             <div class="field">
-                                <label for="ind-name">ชื่อ</label>
+                                <label for="ind-name">{$_('indicatorSection.label_name')}</label>
                                 <input
                                     type="text"
                                     id="ind-name"
                                     bind:value={name}
-                                    placeholder="ชื่อของคุณ"
+                                    placeholder={$_('indicatorSection.placeholder_name')}
                                     required
                                 />
                             </div>
 
                             <div class="field">
-                                <label for="ind-email">Email</label>
+                                <label for="ind-email">{$_('indicatorSection.label_email')}</label>
                                 <input
                                     type="email"
                                     id="ind-email"
                                     bind:value={email}
-                                    placeholder="your@email.com"
+                                    placeholder={$_('indicatorSection.placeholder_email')}
                                     required
                                 />
                             </div>
 
                             <div class="field">
-                                <label for="ind-tv">TradingView Username</label>
+                                <label for="ind-tv">{$_('indicatorSection.label_tv_username')}</label>
                                 <input
                                     type="text"
                                     id="ind-tv"
                                     bind:value={tvUsername}
-                                    placeholder="your_tv_username"
+                                    placeholder={$_('indicatorSection.placeholder_tv_username')}
                                     required
                                     autocomplete="off"
                                 />
-                                <p class="field-hint">ดู Username ที่ TradingView &#8594; Profile &#8594; Settings</p>
+                                <p class="field-hint">{$_('indicatorSection.field_hint_tv')}</p>
                             </div>
 
                             {#if errorMessage}
@@ -190,12 +183,12 @@
 
                             <button type="submit" class="submit-btn" disabled={isSubmitting}>
                                 <span>
-                                    {isSubmitting ? 'กำลังส่ง...' : 'รับ Indicator ฟรี'}
+                                    {isSubmitting ? $_('indicatorSection.submitting') : $_('indicatorSection.submit_button')}
                                 </span>
                             </button>
                         </form>
 
-                        <p class="privacy-note">ข้อมูลของคุณจะถูกเก็บเป็นความลับ</p>
+                        <p class="privacy-note">{$_('indicatorSection.privacy_note')}</p>
                     </div>
                 {/if}
             </div>

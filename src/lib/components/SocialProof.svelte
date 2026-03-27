@@ -1,117 +1,71 @@
 <script>
     import { reveal } from '$lib/actions/reveal';
+    import { _ } from 'svelte-i18n';
+
+    const avatarClasses = ['', 'avatar-blue', 'avatar-green', 'avatar-purple', ''];
+    const starRatings = ['&#9733;&#9733;&#9733;&#9733;&#9733;', '&#9733;&#9733;&#9733;&#9733;&#9733;', '&#9733;&#9733;&#9733;&#9733;&#9733;', '&#9733;&#9733;&#9733;&#9733;&#9733;', '&#9733;&#9733;&#9733;&#9733;&#9734;'];
 </script>
 
 <section class="social-proof" use:reveal>
     <div class="container">
         <div class="stats-bar">
             <div class="stat">
-                <span class="stat-number text-gold">2,500+</span>
-                <span class="stat-label">คนดาวน์โหลดแล้ว</span>
+                <span class="stat-number text-gold">{$_('socialProof.stat_1')}</span>
+                <span class="stat-label">{$_('socialProof.stat_label_1')}</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat">
-                <span class="stat-number text-gold">4.8/5</span>
-                <span class="stat-label">คะแนนรีวิว</span>
+                <span class="stat-number text-gold">{$_('socialProof.stat_2')}</span>
+                <span class="stat-label">{$_('socialProof.stat_label_2')}</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat">
-                <span class="stat-number text-gold">1,700+</span>
-                <span class="stat-label">สมาชิก Discord VIP</span>
+                <span class="stat-number text-gold">{$_('socialProof.stat_3')}</span>
+                <span class="stat-label">{$_('socialProof.stat_label_3')}</span>
             </div>
         </div>
 
         <h2 class="section-title">
-            เสียงจาก <span class="text-gold">ผู้อ่าน</span>
+            {$_('socialProof.title')} <span class="text-gold">{$_('socialProof.title_highlight')}</span>
         </h2>
 
         <div class="testimonials-grid">
-            <div class="testimonial glass">
-                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p class="quote">"อ่านจบภายในวันเดียว เข้าใจง่ายมาก ตอนนี้มีระบบเทรดเป็นของตัวเองแล้ว เปิดออเดอร์มั่นใจขึ้นเยอะ"</p>
-                <div class="author">
-                    <div class="avatar">กง</div>
-                    <div>
-                        <p class="author-name">คุณเก่ง</p>
-                        <p class="author-tier">eBook Free</p>
-                        <p class="review-date">ก.พ. 2569</p>
+            {#each [1,2,3,4,5] as i}
+                <div class="testimonial glass">
+                    <div class="stars">{@html starRatings[i-1]}</div>
+                    <p class="quote">"{$_(`socialProof.quote_${i}`)}"</p>
+                    <div class="author">
+                        <div class="avatar {avatarClasses[i-1]}">{$_(`socialProof.avatar_${i}`)}</div>
+                        <div>
+                            <p class="author-name">{$_(`socialProof.author_${i}`)}</p>
+                            <p class="author-tier">{$_(`socialProof.tier_${i}`)}</p>
+                            <p class="review-date">{$_(`socialProof.date_${i}`)}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="testimonial glass">
-                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p class="quote">"Trade Decoder เปลี่ยนวิธีคิดเรื่อง Money Management ไปเลย พอร์ตหยุดล้างตั้งแต่ใช้กฎ 2% ตามในหนังสือ"</p>
-                <div class="author">
-                    <div class="avatar avatar-blue">ปล</div>
-                    <div>
-                        <p class="author-name">คุณเปิ้ล</p>
-                        <p class="author-tier">eBook Premium</p>
-                        <p class="review-date">ม.ค. 2569</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="testimonial glass">
-                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p class="quote">"Discord VIP คุ้มค่ามาก Signal แม่นยำ แถม Live Trade ให้ดูจริงๆ เหมือนมีพี่เลี้ยงเทรดให้ตลอด"</p>
-                <div class="author">
-                    <div class="avatar avatar-green">มท</div>
-                    <div>
-                        <p class="author-name">คุณมิ้นท์</p>
-                        <p class="author-tier">VIP Member</p>
-                        <p class="review-date">มี.ค. 2569</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="testimonial glass">
-                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                <p class="quote">"เทรดมา 2 ปี ไม่เคยมีแผนชัดเจน พอได้ Trade Decoder แผน 90 วันเปลี่ยนทุกอย่าง Win Rate ขึ้นจาก 35% เป็น 55% ภายในเดือนเดียว"</p>
-                <div class="author">
-                    <div class="avatar avatar-purple">บส</div>
-                    <div>
-                        <p class="author-name">คุณบอส</p>
-                        <p class="author-tier">eBook Premium</p>
-                        <p class="review-date">ธ.ค. 2568</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="testimonial glass">
-                <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
-                <p class="quote">"ก่อนหน้านี้ล้างพอร์ตไป 3 รอบ พอเข้า VIP ได้เรียนรู้กฎ Risk Management จริงจัง ตอนนี้พอร์ตโตขึ้นทุกเดือน"</p>
-                <div class="author">
-                    <div class="avatar">นท</div>
-                    <div>
-                        <p class="author-name">คุณนัท</p>
-                        <p class="author-tier">VIP Member</p>
-                        <p class="review-date">ก.พ. 2569</p>
-                    </div>
-                </div>
-            </div>
+            {/each}
         </div>
 
         <div class="results-strip">
             <div class="result-item glass">
                 <span class="result-icon">&#128200;</span>
                 <div>
-                    <p class="result-stat text-gold">+47%</p>
-                    <p class="result-desc">Win Rate เฉลี่ยหลังอ่าน eBook</p>
+                    <p class="result-stat text-gold">{$_('socialProof.result_stat_1')}</p>
+                    <p class="result-desc">{$_('socialProof.result_desc_1')}</p>
                 </div>
             </div>
             <div class="result-item glass">
                 <span class="result-icon">&#128737;</span>
                 <div>
-                    <p class="result-stat text-gold">0 ครั้ง</p>
-                    <p class="result-desc">ล้างพอร์ตหลังใช้กฎ 2%</p>
+                    <p class="result-stat text-gold">{$_('socialProof.result_stat_2')}</p>
+                    <p class="result-desc">{$_('socialProof.result_desc_2')}</p>
                 </div>
             </div>
             <div class="result-item glass">
                 <span class="result-icon">&#128101;</span>
                 <div>
-                    <p class="result-stat text-gold">92%</p>
-                    <p class="result-desc">แนะนำให้เพื่อน</p>
+                    <p class="result-stat text-gold">{$_('socialProof.result_stat_3')}</p>
+                    <p class="result-desc">{$_('socialProof.result_desc_3')}</p>
                 </div>
             </div>
         </div>

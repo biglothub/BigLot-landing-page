@@ -1,16 +1,18 @@
 <script lang="ts">
     import { page } from '$app/stores';
     import { LINE_OA_URL } from '$lib/config';
+    import { _ } from 'svelte-i18n';
 
     const type = $derived($page.url.searchParams.get('type'));
     const tier = $derived(($page.url.searchParams.get('tier')) || 'free');
     const isIndicator = $derived(type === 'indicator');
     const needsApproval = $derived(!isIndicator && (tier === 'premium' || tier === 'vip'));
     const isVip = $derived(!isIndicator && tier === 'vip');
+    const lang = $derived($page.params.lang || 'th');
 </script>
 
 <svelte:head>
-    <title>ขอบคุณ! - BigLot</title>
+    <title>{$_('thankYou.page_title')}</title>
 </svelte:head>
 
 <section class="thank-you">
@@ -23,26 +25,26 @@
                     <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                 </svg>
             </div>
-            <h1>ลงทะเบียนสำเร็จ!</h1>
+            <h1>{$_('thankYou.indicator_heading')}</h1>
             <p class="message">
-                เราส่งอีเมลยืนยันไปที่ <span class="text-gold">Email</span> ของคุณแล้ว<br />
-                ทีมงานจะเพิ่ม <span class="text-gold">TradingView Access</span> ให้ภายใน 24 ชั่วโมง
+                {$_('thankYou.indicator_message_1')}<br />
+                {$_('thankYou.indicator_message_2')}
             </p>
             <div class="info-box glass-card">
-                <p>ขั้นตอนถัดไป:</p>
+                <p>{$_('thankYou.indicator_next_label')}</p>
                 <ol>
-                    <li>เช็ค Email ยืนยัน (อาจอยู่ใน Spam)</li>
-                    <li>รอ 24 ชม. แล้วเข้า TradingView &rarr; Indicators &rarr; Invite-only scripts</li>
-                    <li>หากไม่ได้รับ ติดต่อทีมงานผ่าน Line ได้เลย</li>
+                    <li>{$_('thankYou.indicator_step_1')}</li>
+                    <li>{$_('thankYou.indicator_step_2')}</li>
+                    <li>{$_('thankYou.indicator_step_3')}</li>
                 </ol>
             </div>
             <div class="line-cta glass-card">
-                <p>มีคำถาม? ติดต่อทีมงาน</p>
+                <p>{$_('thankYou.indicator_contact')}</p>
                 <a href={LINE_OA_URL} target="_blank" rel="noopener noreferrer" class="line-btn">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true">
                         <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
                     </svg>
-                    <span>แอดไลน์ @BigLot</span>
+                    <span>{$_('thankYou.indicator_line_btn')}</span>
                 </a>
             </div>
         {:else}
@@ -63,58 +65,58 @@
             </div>
 
             {#if isVip}
-                <h1>ลงทะเบียน VIP สำเร็จ!</h1>
+                <h1>{$_('thankYou.vip_heading')}</h1>
                 <p class="message">
-                    กรุณาส่ง <span class="text-gold">Slip Deposit $500</span> ผ่าน Line<br />
-                    เพื่อรับ eBook ทั้ง 2 เล่ม + Discord VIP Invite
+                    {$_('thankYou.vip_message_1')}<br />
+                    {$_('thankYou.vip_message_2')}
                 </p>
                 <div class="info-box glass-card">
-                    <p>ขั้นตอนถัดไป:</p>
+                    <p>{$_('thankYou.vip_next_label')}</p>
                     <ol>
-                        <li>กดปุ่ม Line ด้านล่าง</li>
-                        <li>ส่ง Slip Deposit ให้ทีมงาน</li>
-                        <li>รับ eBook + Discord Invite ทาง Email ภายใน 24 ชม.</li>
+                        <li>{$_('thankYou.vip_step_1')}</li>
+                        <li>{$_('thankYou.vip_step_2')}</li>
+                        <li>{$_('thankYou.vip_step_3')}</li>
                     </ol>
                 </div>
             {:else if needsApproval}
-                <h1>ลงทะเบียนสำเร็จ!</h1>
+                <h1>{$_('thankYou.premium_heading')}</h1>
                 <p class="message">
-                    กรุณาส่ง <span class="text-gold">Slip Deposit $100</span> ผ่าน Line<br />
-                    เพื่อรับ eBook Premium ทาง Email
+                    {$_('thankYou.premium_message_1')}<br />
+                    {$_('thankYou.premium_message_2')}
                 </p>
                 <div class="info-box glass-card">
-                    <p>ขั้นตอนถัดไป:</p>
+                    <p>{$_('thankYou.premium_next_label')}</p>
                     <ol>
-                        <li>กดปุ่ม Line ด้านล่าง</li>
-                        <li>ส่ง Slip Deposit ให้ทีมงาน</li>
-                        <li>รับ eBook Premium ทาง Email ภายใน 24 ชม.</li>
+                        <li>{$_('thankYou.premium_step_1')}</li>
+                        <li>{$_('thankYou.premium_step_2')}</li>
+                        <li>{$_('thankYou.premium_step_3')}</li>
                     </ol>
                 </div>
             {/if}
 
             {#if needsApproval}
                 <div class="line-cta glass-card">
-                    <p>ส่ง Slip ผ่าน Line เลย</p>
+                    <p>{$_('thankYou.slip_cta_label')}</p>
                     <a href={LINE_OA_URL} target="_blank" rel="noopener noreferrer" class="line-btn">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true">
                             <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
                         </svg>
-                        <span>ส่ง Slip ผ่าน Line</span>
+                        <span>{$_('thankYou.slip_line_btn')}</span>
                     </a>
                 </div>
             {/if}
 
             {#if !needsApproval}
-                <h1>ขอบคุณ!</h1>
+                <h1>{$_('thankYou.free_heading')}</h1>
                 <p class="message">
-                    เราส่ง eBook ไปที่ <span class="text-gold">Email</span> ของคุณแล้ว<br />
-                    กรุณาเช็ค Inbox หรือ Spam folder
+                    {$_('thankYou.free_message_1')}<br />
+                    {$_('thankYou.free_message_2')}
                 </p>
             {/if}
         {/if}
 
-        <a href="/" class="back-btn">
-            <span>&larr; กลับหน้าแรก</span>
+        <a href="/{lang}" class="back-btn">
+            <span>&larr; {$_('thankYou.back_btn')}</span>
         </a>
     </div>
 </section>

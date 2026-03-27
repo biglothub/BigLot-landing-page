@@ -1,6 +1,7 @@
 <script lang="ts">
     import { env } from '$env/dynamic/public';
     import { reveal } from '$lib/actions/reveal';
+    import { _ } from 'svelte-i18n';
 
     const brokerLink = env.PUBLIC_BROKER_AFFILIATE_LINK || '#signup';
 </script>
@@ -8,10 +9,10 @@
 <section id="steps" class="steps" use:reveal>
     <div class="container">
         <h2 class="section-title">
-            <span class="text-gold">3 ขั้นตอน</span> ง่ายๆ รับ eBook ฟรี
+            <span class="text-gold">{$_('steps.title_highlight')}</span> {$_('steps.title_suffix')}
         </h2>
         <p class="section-subtitle">
-            ใช้เวลาไม่ถึง 5 นาที ก็ได้ eBook แล้ว
+            {$_('steps.subtitle')}
         </p>
 
         <div class="steps-grid">
@@ -19,10 +20,10 @@
                 <div class="step-number">1</div>
                 <div class="step-line"></div>
                 <div class="step-content glass">
-                    <h3>สมัครบัญชี Broker</h3>
-                    <p>กดปุ่มด้านล่างเพื่อสมัครบัญชีผ่าน Broker พาร์ทเนอร์ของเรา</p>
+                    <h3>{$_('steps.step1_title')}</h3>
+                    <p>{$_('steps.step1_desc')}</p>
                     <a href={brokerLink} target="_blank" rel="noopener noreferrer" class="step-btn">
-                        สมัครเลย &rarr;
+                        {$_('steps.step1_button')}
                     </a>
                 </div>
             </div>
@@ -31,16 +32,16 @@
                 <div class="step-number">2</div>
                 <div class="step-line"></div>
                 <div class="step-content glass">
-                    <h3>กรอกข้อมูล</h3>
-                    <p>กลับมากรอก Email และเลข Account ID ที่ได้จาก Broker ในฟอร์มด้านล่าง</p>
+                    <h3>{$_('steps.step2_title')}</h3>
+                    <p>{$_('steps.step2_desc')}</p>
                 </div>
             </div>
 
             <div class="step-card">
                 <div class="step-number">3</div>
                 <div class="step-content glass">
-                    <h3>รับ eBook ทาง Email</h3>
-                    <p>ระบบจะส่ง eBook ไปที่ Email ของคุณทันที พร้อม link ดาวน์โหลด</p>
+                    <h3>{$_('steps.step3_title')}</h3>
+                    <p>{$_('steps.step3_desc')}</p>
                 </div>
             </div>
         </div>

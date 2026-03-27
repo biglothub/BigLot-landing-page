@@ -1,5 +1,6 @@
 <script lang="ts">
     import { env } from '$env/dynamic/public';
+    import { _ } from 'svelte-i18n';
 
     const brokerLink = env.PUBLIC_BROKER_AFFILIATE_LINK || '#signup';
 </script>
@@ -11,33 +12,32 @@
     <div class="container hero-content">
         <div class="badge">
             <span class="dot"></span>
-            eBook ฟรี - จำนวนจำกัด
+            {$_('hero.badge')}
         </div>
 
         <h1 class="animate-float">
-            หยุดเทรดแบบเดา<br />
-            <span class="text-gold">เริ่มเทรดแบบมีระบบ</span>
+            {$_('hero.title_1')}<br />
+            <span class="text-gold">{$_('hero.title_2')}</span>
         </h1>
 
         <p class="subtitle">
-            รับ eBook คู่มือเทรดฉบับสมบูรณ์ ฟรี!
-            เรียนรู้ระบบเทรดที่ผ่านการพิสูจน์แล้ว พร้อมแผน 90 วันสำหรับมือใหม่
+            {$_('hero.subtitle')}
         </p>
 
         <div class="cta-group">
             <a href={brokerLink} target="_blank" rel="noopener noreferrer" class="btn-primary">
-                <span>รับคู่มือเทรดฟรี</span>
+                <span>{$_('hero.cta_primary')}</span>
             </a>
-            <a href="#signup" class="link-secondary">ดูเนื้อหา eBook ก่อน &darr;</a>
+            <a href="#signup" class="link-secondary">{$_('hero.cta_secondary')}</a>
         </div>
 
         <div class="hero-visual">
             <div class="ebook-mockup">
                 <div class="ebook-cover glass-card">
                     <div class="ebook-inner">
-                        <p class="ebook-label">FREE eBOOK</p>
-                        <h3>7 วัน<br/><span class="text-gold">จาก 0 ถึงเทรดจริง</span></h3>
-                        <p class="ebook-author">by BigLot</p>
+                        <p class="ebook-label">{$_('hero.ebook_label')}</p>
+                        <h3>{$_('hero.ebook_title_1')}<br/><span class="text-gold">{$_('hero.ebook_title_2')}</span></h3>
+                        <p class="ebook-author">{$_('hero.ebook_author')}</p>
                     </div>
                 </div>
             </div>

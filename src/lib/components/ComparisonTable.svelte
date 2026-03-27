@@ -1,14 +1,15 @@
 <script>
     import { reveal } from '$lib/actions/reveal';
+    import { _ } from 'svelte-i18n';
 </script>
 
 <section class="comparison" use:reveal>
     <div class="container">
         <h2 class="section-title">
-            เปรียบเทียบ <span class="text-gold">แพ็กเกจ</span>
+            {$_('comparisonTable.title')}
         </h2>
         <p class="section-subtitle">
-            ดูความแตกต่างแต่ละระดับ เลือกให้ตรงกับเป้าหมายของคุณ
+            {$_('comparisonTable.subtitle')}
         </p>
 
         <div class="table-wrapper glass">
@@ -16,72 +17,34 @@
                 <table class="compare-table">
                     <thead>
                         <tr>
-                            <th class="feature-col">สิ่งที่ได้รับ</th>
+                            <th class="feature-col">{$_('comparisonTable.header_features')}</th>
                             <th class="tier-col"><span class="tier-header free-header">FREE</span></th>
                             <th class="tier-col"><span class="tier-header premium-header">PREMIUM</span></th>
                             <th class="tier-col vip-col"><span class="tier-header vip-header">VIP</span></th>
                         </tr>
                     </thead>
                     <tbody>
+                        {#each [1,2,3,4,5] as i}
                         <tr>
-                            <td class="feature-col">eBook เล่ม 1 (พื้นฐาน)</td>
-                            <td class="check">&check;</td>
+                            <td class="feature-col">{$_(`comparisonTable.feature_${i}`)}</td>
+                            <td class={i === 1 ? 'check' : 'cross'}>{i === 1 ? '\u2713' : '\u2717'}</td>
                             <td class="check gold">&check;</td>
                             <td class="check gold">&check;</td>
                         </tr>
+                        {/each}
+                        {#each [6,7,8,9] as i}
                         <tr>
-                            <td class="feature-col">eBook เล่ม 2 (Trade Decoder)</td>
-                            <td class="cross">&cross;</td>
-                            <td class="check gold">&check;</td>
-                            <td class="check gold">&check;</td>
-                        </tr>
-                        <tr>
-                            <td class="feature-col">Technical & Fundamental Analysis</td>
-                            <td class="cross">&cross;</td>
-                            <td class="check gold">&check;</td>
-                            <td class="check gold">&check;</td>
-                        </tr>
-                        <tr>
-                            <td class="feature-col">Money Management แบบ Pro</td>
-                            <td class="cross">&cross;</td>
-                            <td class="check gold">&check;</td>
-                            <td class="check gold">&check;</td>
-                        </tr>
-                        <tr>
-                            <td class="feature-col">Case Study + แผน 90 วัน</td>
-                            <td class="cross">&cross;</td>
-                            <td class="check gold">&check;</td>
-                            <td class="check gold">&check;</td>
-                        </tr>
-                        <tr>
-                            <td class="feature-col">Discord VIP ตลอดชีพ</td>
+                            <td class="feature-col">{$_(`comparisonTable.feature_${i}`)}</td>
                             <td class="cross">&cross;</td>
                             <td class="cross">&cross;</td>
                             <td class="check gold">&check;</td>
                         </tr>
-                        <tr>
-                            <td class="feature-col">Gold Signal & XAUUSD Zone</td>
-                            <td class="cross">&cross;</td>
-                            <td class="cross">&cross;</td>
-                            <td class="check gold">&check;</td>
-                        </tr>
-                        <tr>
-                            <td class="feature-col">Live Trade & Zoom Live Trade</td>
-                            <td class="cross">&cross;</td>
-                            <td class="cross">&cross;</td>
-                            <td class="check gold">&check;</td>
-                        </tr>
-                        <tr>
-                            <td class="feature-col">Special Class & News Update</td>
-                            <td class="cross">&cross;</td>
-                            <td class="cross">&cross;</td>
-                            <td class="check gold">&check;</td>
-                        </tr>
+                        {/each}
                         <tr class="condition-row">
-                            <td class="feature-col">เงื่อนไข</td>
-                            <td>สมัคร Broker</td>
-                            <td class="gold">Deposit $100</td>
-                            <td class="gold">Deposit $500</td>
+                            <td class="feature-col">{$_('comparisonTable.condition_label')}</td>
+                            <td>{$_('comparisonTable.condition_free')}</td>
+                            <td class="gold">{$_('comparisonTable.condition_premium')}</td>
+                            <td class="gold">{$_('comparisonTable.condition_vip')}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -89,7 +52,7 @@
         </div>
 
         <div class="table-cta">
-            <a href="#signup" class="choose-btn">เลือกแพ็กเกจ &darr;</a>
+            <a href="#signup" class="choose-btn">{$_('comparisonTable.cta_button')}</a>
         </div>
     </div>
 </section>

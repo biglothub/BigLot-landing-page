@@ -1,6 +1,8 @@
 <script lang="ts">
     import { goto } from '$app/navigation';
+    import { page } from '$app/stores';
     import { LINE_OA_URL } from '$lib/config';
+    import { _ } from 'svelte-i18n';
 
     type Tier = 'free' | 'premium' | 'vip';
 
@@ -22,13 +24,13 @@
         errorMessage = '';
 
         if (!name.trim() || !email.trim() || !brokerAccountId.trim()) {
-            errorMessage = 'กรุณากรอกข้อมูลให้ครบทุกช่อง';
+            errorMessage = $_('signupForm.error_required');
             return;
         }
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email.trim())) {
-            errorMessage = 'รูปแบบ Email ไม่ถูกต้อง';
+            errorMessage = $_('signupForm.error_email');
             return;
         }
 
@@ -49,13 +51,14 @@
             const data = await res.json();
 
             if (!res.ok) {
-                errorMessage = data.error || 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+                errorMessage = data.error || $_('signupForm.error_generic');
                 return;
             }
 
-            goto(`/thank-you?tier=${selectedTier}`);
+            const lang = $page.params.lang || 'th';
+            goto(`/${lang}/thank-you?tier=${selectedTier}`);
         } catch {
-            errorMessage = 'ไม่สามารถเชื่อมต่อได้ กรุณาลองใหม่';
+            errorMessage = $_('signupForm.error_connection');
         } finally {
             isSubmitting = false;
         }
@@ -68,10 +71,10 @@
             <div class="form-glow"></div>
             <div class="form-card glass-card">
                 <h2>
-                    กรอกข้อมูล <span class="text-gold">รับ eBook</span>
+                    {$_('signupForm.heading')}
                 </h2>
                 <p class="form-desc">
-                    เลือก eBook ที่ต้องการ แล้วกรอกข้อมูลด้านล่าง
+                    {$_('signupForm.form_desc')}
                 </p>
 
                 <!-- Tier Selector -->
@@ -82,8 +85,8 @@
                         onclick={() => selectTier('free')}
                         type="button"
                     >
-                        <span class="tier-tab-label">FREE</span>
-                        <span class="tier-tab-desc">eBook เล่ม 1</span>
+                        <span class="tier-tab-label">{$_('signupForm.tier_free_label')}</span>
+                        <span class="tier-tab-desc">{$_('signupForm.tier_free_desc')}</span>
                     </button>
                     <button
                         class="tier-tab premium-tab"
@@ -91,8 +94,8 @@
                         onclick={() => selectTier('premium')}
                         type="button"
                     >
-                        <span class="tier-tab-label">PREMIUM</span>
-                        <span class="tier-tab-desc">eBook เล่ม 2</span>
+                        <span class="tier-tab-label">{$_('signupForm.tier_premium_label')}</span>
+                        <span class="tier-tab-desc">{$_('signupForm.tier_premium_desc')}</span>
                     </button>
                     <button
                         class="tier-tab vip-tab"
@@ -100,41 +103,41 @@
                         onclick={() => selectTier('vip')}
                         type="button"
                     >
-                        <span class="tier-tab-label">&#128081; VIP</span>
-                        <span class="tier-tab-desc">eBook + Discord</span>
+                        <span class="tier-tab-label">{$_('signupForm.tier_vip_label')}</span>
+                        <span class="tier-tab-desc">{$_('signupForm.tier_vip_desc')}</span>
                     </button>
                 </div>
 
                 <form onsubmit={handleSubmit}>
                     <div class="field">
-                        <label for="name">ชื่อ</label>
+                        <label for="name">{$_('signupForm.label_name')}</label>
                         <input
                             type="text"
                             id="name"
                             bind:value={name}
-                            placeholder="ชื่อของคุณ"
+                            placeholder={$_('signupForm.placeholder_name')}
                             required
                         />
                     </div>
 
                     <div class="field">
-                        <label for="email">Email</label>
+                        <label for="email">{$_('signupForm.label_email')}</label>
                         <input
                             type="email"
                             id="email"
                             bind:value={email}
-                            placeholder="your@email.com"
+                            placeholder={$_('signupForm.placeholder_email')}
                             required
                         />
                     </div>
 
                     <div class="field">
-                        <label for="account">Broker Account ID</label>
+                        <label for="account">{$_('signupForm.label_broker_account')}</label>
                         <input
                             type="text"
                             id="account"
                             bind:value={brokerAccountId}
-                            placeholder="เลขบัญชีที่ได้จาก Broker"
+                            placeholder={$_('signupForm.placeholder_broker_account')}
                             required
                         />
                     </div>
@@ -142,20 +145,20 @@
                     <!-- Line CTA for Slip (Premium & VIP) -->
                     {#if needsSlip}
                         <div class="field slip-field">
-                            <p class="field-label">Slip การ Deposit ({selectedTier === 'vip' ? '$500' : '$100'} ขึ้นไป)</p>
+                            <p class="field-label">{$_('signupForm.slip_field_label', { values: { amount: selectedTier === 'vip' ? '$500' : '$100' } })}</p>
                             <a href={LINE_OA_URL} target="_blank" rel="noopener noreferrer" class="line-slip-cta">
                                 <div class="line-slip-inner">
                                     <svg class="line-icon" width="32" height="32" viewBox="0 0 24 24" fill="#06C755" aria-hidden="true">
                                         <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63h2.386c.349 0 .63.285.63.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.627-.63.349 0 .631.285.631.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/>
                                     </svg>
                                     <div class="line-slip-text">
-                                        <p>ส่ง Slip ผ่าน Line</p>
-                                        <span>กดเพื่อแชทกับทีมงาน @BigLot</span>
+                                        <p>{$_('signupForm.slip_line_cta')}</p>
+                                        <span>{$_('signupForm.slip_line_cta_sub')}</span>
                                     </div>
                                     <span class="line-arrow">&rarr;</span>
                                 </div>
                             </a>
-                            <p class="line-slip-note">กรอกฟอร์มก่อน แล้วส่ง Slip ผ่าน Line ทีมงานจะตรวจสอบและส่ง {selectedTier === 'vip' ? 'eBook + Discord Invite' : 'eBook'} ให้ภายใน 24 ชม.</p>
+                            <p class="line-slip-note">{selectedTier === 'vip' ? $_('signupForm.slip_note_vip') : $_('signupForm.slip_note_ebook')}</p>
                         </div>
                     {/if}
 
@@ -168,20 +171,20 @@
                     <button type="submit" class="submit-btn" class:premium-submit={needsSlip} disabled={isSubmitting}>
                         <span>
                             {#if isSubmitting}
-                                กำลังส่ง...
+                                {$_('signupForm.submitting')}
                             {:else if selectedTier === 'vip'}
-                                สมัคร VIP Membership
+                                {$_('signupForm.submit_vip')}
                             {:else if selectedTier === 'premium'}
-                                ส่งข้อมูลรับ eBook Premium
+                                {$_('signupForm.submit_premium')}
                             {:else}
-                                รับ eBook ฟรี
+                                {$_('signupForm.submit_free')}
                             {/if}
                         </span>
                     </button>
                 </form>
 
                 <p class="privacy-note">
-                    ข้อมูลของคุณจะถูกเก็บเป็นความลับ และไม่แชร์กับบุคคลที่สาม
+                    {$_('signupForm.privacy_note')}
                 </p>
             </div>
         </div>

@@ -1,47 +1,38 @@
 <script>
     import { reveal } from '$lib/actions/reveal';
+    import { _ } from 'svelte-i18n';
 </script>
 
 <section class="about" use:reveal>
     <div class="container">
         <h2 class="section-title">
-            ทำความรู้จัก <span class="text-gold">BigLot</span>
+            {$_('aboutCredibility.title')} <span class="text-gold">{$_('aboutCredibility.title_highlight')}</span>
         </h2>
         <p class="section-subtitle">
-            เทรดเดอร์ตัวจริง ที่อยากแชร์ระบบที่ใช้ได้ผลจริง
+            {$_('aboutCredibility.subtitle')}
         </p>
 
         <div class="about-layout">
             <div class="about-photo glass">
                 <div class="photo-frame">
-                    <div class="avatar">BL</div>
+                    <div class="avatar">{$_('aboutCredibility.avatar')}</div>
                 </div>
-                <h3>BigLot</h3>
-                <p class="role">Forex & XAUUSD Trader</p>
+                <h3>{$_('aboutCredibility.name')}</h3>
+                <p class="role">{$_('aboutCredibility.role')}</p>
             </div>
 
             <div class="about-details">
                 <div class="credentials-grid">
+                    {#each [1,2,3,4] as i}
                     <div class="credential glass">
-                        <span class="cred-number text-gold">5+</span>
-                        <span class="cred-label">ปีประสบการณ์เทรด</span>
+                        <span class="cred-number text-gold">{$_(`aboutCredibility.cred_number_${i}`)}</span>
+                        <span class="cred-label">{$_(`aboutCredibility.cred_label_${i}`)}</span>
                     </div>
-                    <div class="credential glass">
-                        <span class="cred-number text-gold">2,500+</span>
-                        <span class="cred-label">ผู้อ่าน eBook</span>
-                    </div>
-                    <div class="credential glass">
-                        <span class="cred-number text-gold">1,700+</span>
-                        <span class="cred-label">สมาชิก Discord VIP</span>
-                    </div>
-                    <div class="credential glass">
-                        <span class="cred-number text-gold">XAUUSD</span>
-                        <span class="cred-label">สายเทรดหลัก</span>
-                    </div>
+                    {/each}
                 </div>
 
                 <div class="about-story glass">
-                    <p>"ผมเคยล้างพอร์ตมาก่อน เพราะเทรดแบบไม่มีระบบ ไม่มี SL ไม่มี Money Management พอเริ่มจริงจังกับการวางแผน ทุกอย่างเปลี่ยน ผมเขียน eBook นี้เพื่อให้คุณไม่ต้องเจ็บแบบที่ผมเคยเจ็บ"</p>
+                    <p>"{$_('aboutCredibility.story')}"</p>
                 </div>
             </div>
         </div>
