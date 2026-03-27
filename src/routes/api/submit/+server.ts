@@ -3,6 +3,8 @@ import type { RequestHandler } from './$types';
 import { supabase } from '$lib/supabase';
 import { sendEbookEmail, sendAdminNotification } from '$lib/email';
 
+const MAX_LEAD_REQUESTS_PER_EMAIL = 3;
+
 export const POST: RequestHandler = async ({ request }) => {
     try {
         const formData = await request.formData();
@@ -22,40 +24,46 @@ export const POST: RequestHandler = async ({ request }) => {
             return json({ error: 'กรุณากรอกข้อมูลให้ครบทุกช่อง' }, { status: 400 });
         }
 
+        const cleanName = name.trim();
+        const cleanEmail = email.trim().toLowerCase();
+        const cleanBrokerAccountId = brokerAccountId.trim();
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
+        if (!emailRegex.test(cleanEmail)) {
             return json({ error: 'รูปแบบ Email ไม่ถูกต้อง' }, { status: 400 });
         }
 
-        // Check duplicate email for same tier
-        const { data: existing } = await supabase
+        // Allow the same email up to 3 requests total across all tiers.
+        const { count: existingLeadCount, error: countError } = await supabase
             .from('leads')
-            .select('id, tier')
-            .eq('email', email.trim())
-            .eq('tier', tier)
-            .single();
+            .select('*', { count: 'exact', head: true })
+            .eq('email', cleanEmail);
 
-        if (existing) {
-            const messages: Record<string, string> = {
-                vip: 'Email นี้เคยสมัคร VIP แล้ว กรุณารอทีมงานตรวจสอบ',
-                premium: 'Email นี้เคยขอ eBook Premium แล้ว กรุณารอทีมงานตรวจสอบ',
-                free: 'Email นี้เคยลงทะเบียนแล้ว กรุณาเช็ค Email ของคุณ'
-            };
-            return json({ error: messages[tier] || messages.free }, { status: 409 });
+        if (countError) {
+            console.error('Supabase count error:', countError);
+            return json({ error: 'เกิดข้อผิดพลาดในการตรวจสอบข้อมูล' }, { status: 500 });
+        }
+
+        if ((existingLeadCount ?? 0) >= MAX_LEAD_REQUESTS_PER_EMAIL) {
+            return json(
+                { error: `Email นี้ใช้สิทธิ์ครบ ${MAX_LEAD_REQUESTS_PER_EMAIL} ครั้งแล้ว กรุณาใช้ Email อื่นหรือติดต่อทีมงาน` },
+                { status: 409 }
+            );
         }
 
         // Insert lead (slip จะส่งผ่าน Line แทน)
-        const { error: insertError } = await supabase
+        const { data: insertedLead, error: insertError } = await supabase
             .from('leads')
             .insert({
-                name: name.trim(),
-                email: email.trim(),
-                broker_account_id: brokerAccountId.trim(),
+                name: cleanName,
+                email: cleanEmail,
+                broker_account_id: cleanBrokerAccountId,
                 tier,
                 slip_url: null,
                 approved: tier === 'free',
                 email_sent: false
-            });
+            })
+            .select('id')
+            .single();
 
         if (insertError) {
             console.error('Supabase insert error:', insertError);
@@ -65,13 +73,12 @@ export const POST: RequestHandler = async ({ request }) => {
         // Free tier: send ebook immediately
         if (tier === 'free') {
             try {
-                await sendEbookEmail(name.trim(), email.trim(), 'free');
+                await sendEbookEmail(cleanName, cleanEmail, 'free');
 
                 await supabase
                     .from('leads')
                     .update({ email_sent: true })
-                    .eq('email', email.trim())
-                    .eq('tier', 'free');
+                    .eq('id', insertedLead.id);
             } catch (emailError) {
                 console.error('Email send error:', emailError);
             }
@@ -80,7 +87,7 @@ export const POST: RequestHandler = async ({ request }) => {
         // Premium & VIP tier: notify admin (slip จะมาทาง Line)
         if (tier === 'premium' || tier === 'vip') {
             try {
-                await sendAdminNotification(name.trim(), email.trim(), brokerAccountId.trim(), null, tier);
+                await sendAdminNotification(cleanName, cleanEmail, cleanBrokerAccountId, null, tier);
             } catch (notifyError) {
                 console.error('Admin notification error:', notifyError);
             }
