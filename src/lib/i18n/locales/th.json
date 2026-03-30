@@ -346,6 +346,11 @@
     "free_heading": "ขอบคุณ!",
     "free_message_1": "เราส่ง eBook ไปที่ Email ของคุณแล้ว",
     "free_message_2": "กรุณาเช็ค Inbox หรือ Spam folder",
+    "free_line_label": "แอดไลน์ BigLot รับสิทธิ์เพิ่มเติม",
+    "free_line_benefit_1": "สอบถามเรื่องเทรดกับทีม BigLot ได้เลย",
+    "free_line_benefit_2": "รับแจ้งเตือนเมื่อมีเนื้อหาใหม่และกิจกรรมพิเศษ",
+    "free_line_benefit_3": "รับสิทธิ์ก่อนใครเมื่อเปิดตัวเครื่องมือเทรดใหม่",
+    "free_line_btn": "แอดไลน์ @BigLot",
     "back_btn": "กลับหน้าแรก"
   }
 }

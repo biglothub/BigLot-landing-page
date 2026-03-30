@@ -346,6 +346,11 @@
     "free_heading": "Thank You!",
     "free_message_1": "We've sent the eBook to your email.",
     "free_message_2": "Please check your Inbox or Spam folder.",
+    "free_line_label": "Add BigLot Line for exclusive benefits",
+    "free_line_benefit_1": "Ask the BigLot team about trading anytime",
+    "free_line_benefit_2": "Get notified when new content and events drop",
+    "free_line_benefit_3": "Be first to access new trading tools",
+    "free_line_btn": "Add Line @BigLot",
     "back_btn": "Back to Home"
   }
 }

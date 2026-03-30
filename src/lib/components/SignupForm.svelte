@@ -8,6 +8,7 @@
 
     let selectedTier: Tier = $state('free');
     const needsSlip = $derived(selectedTier === 'premium' || selectedTier === 'vip');
+    const needsBrokerAccount = $derived(selectedTier !== 'free');
     let name = $state('');
     let email = $state('');
     let brokerAccountId = $state('');
@@ -23,7 +24,7 @@
         e.preventDefault();
         errorMessage = '';
 
-        if (!name.trim() || !email.trim() || !brokerAccountId.trim()) {
+        if (!name.trim() || !email.trim() || (needsBrokerAccount && !brokerAccountId.trim())) {
             errorMessage = $_('signupForm.error_required');
             return;
         }
@@ -131,16 +132,18 @@
                         />
                     </div>
 
-                    <div class="field">
-                        <label for="account">{$_('signupForm.label_broker_account')}</label>
-                        <input
-                            type="text"
-                            id="account"
-                            bind:value={brokerAccountId}
-                            placeholder={$_('signupForm.placeholder_broker_account')}
-                            required
-                        />
-                    </div>
+                    {#if needsBrokerAccount}
+                        <div class="field">
+                            <label for="account">{$_('signupForm.label_broker_account')}</label>
+                            <input
+                                type="text"
+                                id="account"
+                                bind:value={brokerAccountId}
+                                placeholder={$_('signupForm.placeholder_broker_account')}
+                                required
+                            />
+                        </div>
+                    {/if}
 
                     <!-- Line CTA for Slip (Premium & VIP) -->
                     {#if needsSlip}

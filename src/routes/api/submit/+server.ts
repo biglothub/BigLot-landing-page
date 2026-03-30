@@ -19,14 +19,18 @@ export const POST: RequestHandler = async ({ request }) => {
             return json({ error: 'Tier ไม่ถูกต้อง' }, { status: 400 });
         }
 
-        // Validate required fields
-        if (!name?.trim() || !email?.trim() || !brokerAccountId?.trim()) {
+        // Validate required fields (broker_account_id is optional for free tier)
+        if (!name?.trim() || !email?.trim()) {
             return json({ error: 'กรุณากรอกข้อมูลให้ครบทุกช่อง' }, { status: 400 });
+        }
+
+        if (tier !== 'free' && !brokerAccountId?.trim()) {
+            return json({ error: 'กรุณากรอก Broker Account ID' }, { status: 400 });
         }
 
         const cleanName = name.trim();
         const cleanEmail = email.trim().toLowerCase();
-        const cleanBrokerAccountId = brokerAccountId.trim();
+        const cleanBrokerAccountId = brokerAccountId?.trim() || '';
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(cleanEmail)) {
             return json({ error: 'รูปแบบ Email ไม่ถูกต้อง' }, { status: 400 });
